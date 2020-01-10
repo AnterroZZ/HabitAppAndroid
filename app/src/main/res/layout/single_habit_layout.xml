@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <ImageView
+        android:paddingStart="14dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/single_habit_image"
+        tools:srcCompat="@drawable/ic_gym"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/ic_circle_color_accent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/single_habit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Hitting the gym"
+            style="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/colorAccent"
+            />
+
+        <TextView
+            android:id="@+id/single_habit_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="In 10 min"
+            android:textColor="@color/colorAccent"
+            style="@style/TextAppearance.AppCompat.Body1"
+            />
+
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

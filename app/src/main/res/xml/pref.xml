@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="gay"
+        android:title="Are you gay"/>
+    <Preference
+        android:key="about"
+        android:title="About us"
+        android:summary="Everything you need to know" />
+</PreferenceScreen>

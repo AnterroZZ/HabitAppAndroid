@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".AddHabitActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/new_habit_toolbar_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/new_habit_toolbar_title"
+            android:text="@string/new_habit_toolbar_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/new_habit_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/new_habit_toolbar_background"
+        />
+
+    <TextView
+        android:id="@+id/new_habit_tv_make_change"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="It's time to make a change"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_habit_divider" />
+    <EditText
+        android:id="@+id/new_habit_title"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="@string/title_hint"
+        android:textColor="@color/colorAccent"
+        android:padding="16dp"
+        android:textColorHint="@color/colorAccentInactive"
+        android:background="@drawable/ic_title_add_new_habit_background"
+        app:layout_constraintTop_toBottomOf="@id/new_habit_tv_make_change"
+        />
+
+    <LinearLayout
+        android:id="@+id/new_habit_linear_layout"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/new_habit_title"
+        >
+
+        <ImageButton
+            android:id="@+id/new_habit_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_new_habit_icon"
+            app:srcCompat="@drawable/ic_add_circle_black_24dp"
+            android:tint="@color/colorAccent"
+            android:paddingLeft="5dp"
+            />
+
+        <EditText
+            android:id="@+id/new_habit_priority"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/priority_hint"
+            android:textColor="@color/colorAccent"
+            android:padding="16dp"
+            android:textColorHint="@color/colorAccentInactive"
+            android:background="@drawable/ic_priority_edit_text_background"/>
+    </LinearLayout>
+
+    <!--TODO: Change for the custom view for more control over your habits-->
+
+    <RadioGroup
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/new_habit_linear_layout"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:checkedButton="@id/new_habit_time_fifteen_minutes"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            >
+            <RadioButton
+                android:id="@+id/new_habit_time_one_minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 minute"
+                android:textColor="@color/colorAccent"
+                />
+            <RadioButton
+                android:id="@+id/new_habit_time_fifteen_minutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15 minutes"
+                android:textColor="@color/colorAccent"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/new_habit_time_thirty_minutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 minutes"
+                android:textColor="@color/colorAccent"
+                />
+            <RadioButton
+                android:id="@+id/new_habit_time_one_hour"
+                android:text="1 hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                />
+
+        </LinearLayout>
+
+
+    </RadioGroup>
+
+    <Button
+        android:onClick="AddNewHabit"
+        android:text="@string/new_habit_done_button"
+        android:textColor="@color/colorAccent"
+        style="@style/TextAppearance.AppCompat.Display1"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/ic_new_habbit_rounded_button"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TrainingProject</string>
+    <string name="priority_hint">Priority</string>
+    <string name="title_hint">Enter your habit\'s name</string>
+    <string name="new_habit_done_button">DONE</string>
+    <string name="new_habit_toolbar_title">Create new Habbit</string>
+</resources>
