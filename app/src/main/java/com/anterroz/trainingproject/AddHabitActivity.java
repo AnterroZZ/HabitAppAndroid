@@ -92,13 +92,24 @@ public class AddHabitActivity extends AppCompatActivity {
 
     public void AddNewHabit(View view) {
         String title = mTitle.getText().toString();
-        int time = getTimeFromButtons();
-        int imageViewId = R.drawable.ic_add_circle_black_24dp;
-        Date date = new Date();
 
-        HabitEntry habitEntry = new HabitEntry(title,imageViewId,date,time);
-        mDatabase.habitDao().insertHabit(habitEntry);
-        finish();
+        if(title.equals(""))
+        {
+            Toast.makeText(this,getString(R.string.new_habit_no_habit_title),Toast.LENGTH_SHORT).show();
+        } else {
+            int time = getTimeFromButtons();
+            int imageViewId = R.drawable.ic_add_circle_black_24dp;
+            Date date = new Date();
+
+            final HabitEntry habitEntry = new HabitEntry(title, imageViewId, date, time);
+            AppExecutor.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDatabase.habitDao().insertHabit(habitEntry);
+                }
+            });
+            finish();
+        }
 
     }
 }

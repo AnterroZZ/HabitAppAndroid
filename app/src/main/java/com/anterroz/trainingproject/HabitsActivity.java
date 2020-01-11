@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,14 +43,22 @@ public class HabitsActivity extends AppCompatActivity {
 
        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
            @Override
-           public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+           public boolean onMove(@NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                return false;
            }
 
            @Override
-           public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+           public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
                //TODO: (2) Delete instance of habit from the Room's database
-
+               AppExecutor.getInstance().diskIO().execute(new Runnable() {
+                   @Override
+                   public void run() {
+                       int position = viewHolder.getAdapterPosition();
+                       List<HabitEntry> habitEntries = mAdapter.getHabits();
+                       mDatabase.habitDao().deleteHabit(habitEntries.get(position));
+                       retrieveHabits();
+                   }
+               });
            }
        }).attachToRecyclerView(mRecyclerView);
 
@@ -63,8 +70,24 @@ public class HabitsActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        mAdapter.setHabits(mDatabase.habitDao().loadAllHabits());
+
+        retrieveHabits();
         super.onResume();
 
+    }
+
+    private void retrieveHabits() {
+        AppExecutor.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                final List<HabitEntry> habits = mDatabase.habitDao().loadAllHabits();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.setHabits(habits);
+                    }
+                });
+            }
+        });
     }
 }

@@ -90,5 +90,11 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
     public void setHabits(List<HabitEntry> habits)
     {
         mHabitEntry = habits;
+        notifyDataSetChanged();
+    }
+
+    public List<HabitEntry> getHabits()
+    {
+        return mHabitEntry;
     }
 }
