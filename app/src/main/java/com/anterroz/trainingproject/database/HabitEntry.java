@@ -26,23 +26,28 @@ public class HabitEntry {
     @ColumnInfo(name = "time_in_seconds")
     private int timeInSeconds;
 
+    @ColumnInfo(name = "category")
+    private String category;
+
 
     @Ignore
-    public HabitEntry(String title, int imageViewId,Date updatedAt,int timeInSeconds)
+    public HabitEntry(String title, int imageViewId,Date updatedAt,int timeInSeconds,String category)
     {
         this.title = title;
         this.imageViewId = imageViewId;
         this.updatedAt = updatedAt;
         this.timeInSeconds = timeInSeconds;
+        this.category = category;
     }
 
-    public HabitEntry(int id, String title, int imageViewId,Date updatedAt, int timeInSeconds)
+    public HabitEntry(int id, String title, int imageViewId,Date updatedAt, int timeInSeconds,String category)
     {
         this.id = id;
         this.title = title;
         this.imageViewId = imageViewId;
         this.updatedAt = updatedAt;
         this.timeInSeconds = timeInSeconds;
+        this.category = category;
     }
 
     public int getId() {
@@ -81,5 +86,13 @@ public class HabitEntry {
     }
     public void setTimeInSeconds(int timeInSeconds) {
         this.timeInSeconds = timeInSeconds;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

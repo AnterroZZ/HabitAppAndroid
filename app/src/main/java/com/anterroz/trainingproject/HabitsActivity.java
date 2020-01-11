@@ -2,21 +2,26 @@ package com.anterroz.trainingproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.anterroz.trainingproject.database.HabitEntry;
 import com.anterroz.trainingproject.database.HabitsDatabase;
 
 import java.util.List;
 
-public class HabitsActivity extends AppCompatActivity {
+public class HabitsActivity extends AppCompatActivity implements HabitsAdapter.ItemClickListener {
 
+    private static final String TAG = HabitsActivity.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private HabitsAdapter mAdapter;
     private HabitsDatabase mDatabase;
@@ -31,10 +36,10 @@ public class HabitsActivity extends AppCompatActivity {
         /* Setting up RecyclerView and
         attaching HabitsAdapter to it
          */
-       mRecyclerView = findViewById(R.id.my_recycler_view);
+       mRecyclerView = findViewById(R.id.habits_recycler_view);
        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-       mAdapter = new HabitsAdapter(this);
+       mAdapter = new HabitsAdapter(this,this);
        mRecyclerView.setAdapter(mAdapter);
 
 
@@ -49,45 +54,40 @@ public class HabitsActivity extends AppCompatActivity {
 
            @Override
            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
-               //TODO: (2) Delete instance of habit from the Room's database
                AppExecutor.getInstance().diskIO().execute(new Runnable() {
                    @Override
                    public void run() {
                        int position = viewHolder.getAdapterPosition();
                        List<HabitEntry> habitEntries = mAdapter.getHabits();
                        mDatabase.habitDao().deleteHabit(habitEntries.get(position));
-                       retrieveHabits();
                    }
                });
            }
        }).attachToRecyclerView(mRecyclerView);
-
+       retrieveHabits();
     }
 
     public void addNewHabit(View view) {
         startActivity(new Intent(this,AddHabitActivity.class));
     }
 
-    @Override
-    protected void onResume() {
-
-        retrieveHabits();
-        super.onResume();
-
-    }
 
     private void retrieveHabits() {
-        AppExecutor.getInstance().diskIO().execute(new Runnable() {
+        Log.d(TAG,"Retrieving habits from DataBase..");
+        final LiveData<List<HabitEntry>> habits = mDatabase.habitDao().loadAllHabits();
+        habits.observe(this, new Observer<List<HabitEntry>>() {
             @Override
-            public void run() {
-                final List<HabitEntry> habits = mDatabase.habitDao().loadAllHabits();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdapter.setHabits(habits);
-                    }
-                });
+            public void onChanged(List<HabitEntry> habitEntries) {
+                Log.d(TAG,"Receiving database update (Live data)");
+                mAdapter.setHabits(habitEntries);
             }
         });
+    }
+
+    @Override
+    public void onItemClickListener(int itemId) {
+        Intent intent = new Intent(HabitsActivity.this, AddHabitActivity.class);
+        intent.putExtra(AddHabitActivity.EXTRA_TAG,itemId);
+        startActivity(intent);
     }
 }

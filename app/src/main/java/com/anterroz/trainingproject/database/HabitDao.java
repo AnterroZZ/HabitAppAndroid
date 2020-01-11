@@ -2,6 +2,7 @@ package com.anterroz.trainingproject.database;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +15,7 @@ public interface HabitDao {
 
 
     @Query("SELECT * FROM habit ")
-    List<HabitEntry> loadAllHabits();
+    LiveData<List<HabitEntry>> loadAllHabits();
 
     @Insert
     void insertHabit(HabitEntry habitEntry);
@@ -24,6 +25,9 @@ public interface HabitDao {
 
     @Delete
     void deleteHabit(HabitEntry habitEntry);
+
+    @Query("SELECT * FROM habit WHERE id = :id")
+    LiveData<HabitEntry> loadHabitById(int id);
 
 
 }

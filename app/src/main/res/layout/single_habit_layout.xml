@@ -36,14 +36,31 @@
             android:textColor="@color/colorAccent"
             />
 
-        <TextView
-            android:id="@+id/single_habit_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="In 10 min"
-            android:textColor="@color/colorAccent"
-            style="@style/TextAppearance.AppCompat.Body2"
-            />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/single_habit_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="In 10 min"
+                android:textColor="@color/colorAccent"
+                style="@style/TextAppearance.AppCompat.Body2"
+                />
+
+            <TextView
+                android:id="@+id/single_habit_category"
+                tools:text="Exercise"
+                android:gravity="end"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccentInactive"
+                style="@style/TextAppearance.AppCompat.Body2"
+                />
+
+        </LinearLayout>
+
 
         <View
             android:layout_marginTop="10dp"

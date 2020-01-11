@@ -1,8 +1,19 @@
 <resources>
     <string name="app_name">TrainingProject</string>
-    <string name="priority_hint">Priority</string>
+    <string name="category_hint">Category</string>
     <string name="title_hint">Enter your habit\'s name</string>
     <string name="new_habit_done_button">DONE</string>
-    <string name="new_habit_toolbar_title">Create new Habbit</string>
-    <string name="new_habit_no_habit_title">You can\'t make a habit without a title ;)</string>
+    <string name="new_habit_toolbar_title">Create new Habit</string>
+    <string name="new_habit_no_habit_title">You can\'t make a habit without it\'s title ;)</string>
+    <string name="habits_toolbar_title">Your Habits</string>
+    <string name="new_habit_button_update">Update</string>
+    <string name="new_habit_no_time">You need to choose a time!</string>
+
+
+    <string-array name="categories">
+        <item>Exercises</item>
+        <item>Self Development</item>
+        <item>Health</item>
+        <item>Other</item>
+    </string-array>
 </resources>
