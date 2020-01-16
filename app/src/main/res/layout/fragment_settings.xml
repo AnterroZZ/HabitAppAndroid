@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
     android:background="@color/colorBackground">
 
     <androidx.appcompat.widget.Toolbar
@@ -13,20 +12,32 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintTop_toTopOf="parent"
-        app:logo="@drawable/settings_label" />
+        >
+
+        <TextView
+            android:id="@+id/settings_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/settings_fragment_title"
+            android:textColor="@color/colorAccent"
+            style="@style/TextAppearance.AppCompat.Headline"
+            />
+    </androidx.appcompat.widget.Toolbar>
     <View
-        android:id="@+id/line2"
+        android:id="@+id/settings_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorAccent"
         app:layout_constraintTop_toBottomOf="@id/settings_toolbar"
-        app:layout_constraintBottom_toTopOf="@id/place_holder"
+        app:layout_constraintBottom_toTopOf="@id/settings_preference_place_holder"
         />
 
     <FrameLayout
-        android:id="@+id/place_holder"
+        android:layout_marginTop="16dp"
+        android:id="@+id/settings_preference_place_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line2" />
+        app:layout_constraintTop_toBottomOf="@id/settings_divider" />
 </androidx.constraintlayout.widget.ConstraintLayout>

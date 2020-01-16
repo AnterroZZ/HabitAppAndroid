@@ -29,18 +29,21 @@ public class HabitEntry {
     @ColumnInfo(name = "category")
     private String category;
 
+    private boolean firstTimerrunning;
+
 
     @Ignore
-    public HabitEntry(String title, int imageViewId,Date updatedAt,int timeInSeconds,String category)
+    public HabitEntry(String title, int imageViewId,Date updatedAt,int timeInSeconds,String category,boolean firstTimerrunning)
     {
         this.title = title;
         this.imageViewId = imageViewId;
         this.updatedAt = updatedAt;
         this.timeInSeconds = timeInSeconds;
         this.category = category;
+        this.firstTimerrunning = firstTimerrunning;
     }
 
-    public HabitEntry(int id, String title, int imageViewId,Date updatedAt, int timeInSeconds,String category)
+    public HabitEntry(int id, String title, int imageViewId,Date updatedAt, int timeInSeconds,String category,boolean firstTimerrunning)
     {
         this.id = id;
         this.title = title;
@@ -48,6 +51,7 @@ public class HabitEntry {
         this.updatedAt = updatedAt;
         this.timeInSeconds = timeInSeconds;
         this.category = category;
+        this.firstTimerrunning =firstTimerrunning;
     }
 
     public int getId() {
@@ -94,5 +98,13 @@ public class HabitEntry {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public boolean isFirstTimerrunning() {
+        return firstTimerrunning;
+    }
+
+    public void setFirstTimerrunning(boolean firstTimerrunning) {
+        this.firstTimerrunning = firstTimerrunning;
     }
 }

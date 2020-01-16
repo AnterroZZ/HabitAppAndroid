@@ -1,14 +1,19 @@
 package com.anterroz.trainingproject;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anterroz.trainingproject.database.HabitEntry;
+import com.anterroz.trainingproject.database.HabitsDatabase;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -19,6 +24,8 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
     private Context mContext;
     private List<HabitEntry> mHabitEntry;
     final private ItemClickListener mItemClickListener;
+    private HabitsDatabase mDatabase;
+    private List<Boolean> isFirstTimeHabitRunning;
 
 
 
@@ -26,6 +33,7 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
     {
         mContext = context;
         mItemClickListener = listener;
+        isFirstTimeHabitRunning = new ArrayList<>();
     }
 
     @NonNull
@@ -39,34 +47,62 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HabitsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final HabitsViewHolder holder, final int position) {
 
         /* Taking data from a specified entry of mHabitEntry and binding it
         to a RecyclerView ViewHolder
          */
-        HabitEntry habitEntry = mHabitEntry.get(position);
+        final HabitEntry habitEntry = mHabitEntry.get(position);
         String title = habitEntry.getTitle();
         String category = habitEntry.getCategory();
         int imageViewId = habitEntry.getImageViewId();
         int time = habitEntry.getTimeInSeconds();
+        int currentTime = (int) new Date().getTime();
+        int timeRemainingInMillis=time - currentTime;
+//        Toast.makeText(mContext, "" + habitEntry.isFirstTimerrunning(), Toast.LENGTH_SHORT).show();
+
+            if (holder.timer != null) {
+                holder.timer.cancel();
+                holder.timer = new CountDownTimer(timeRemainingInMillis, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        String output = "Will go down in " + millisUntilFinished / 1000;
+                        holder.habitTime.setText(output);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        holder.habitTime.setText("Done!");
+                    }
+                }.start();
+            }else
+            {
+                habitEntry.setTimeInSeconds((int) new Date().getTime() + 10000);
+                time = habitEntry.getTimeInSeconds();
+                timeRemainingInMillis=time - currentTime;
+                holder.timer = new CountDownTimer(timeRemainingInMillis, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        String output = "Will go down in " + millisUntilFinished / 1000;
+                        holder.habitTime.setText(output);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        holder.habitTime.setText("Done!");
+                        this.cancel();
+                    }
+                }.start();
+            }
+
+
+
 
 
         holder.habitTitle.setText(title);
         holder.habitImage.setImageResource(imageViewId);
         holder.habitCategory.setText(category);
-        int timeMinutes = time/60;
-        if(timeMinutes>59)
-        {
-            String output = String.format("In %d hours",time);
-            holder.habitTime.setText(output);
-        }else if(timeMinutes<59){
-            String output = String.format("In %d minute",time);
-            holder.habitTime.setText(output);
-        }else if(timeMinutes>60*24)
-        {
-            String output = String.format("In %d days",time);
-            holder.habitTime.setText(output);
-        }
+
 
     }
 
@@ -78,28 +114,6 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
         return mHabitEntry.size();
     }
 
-    class HabitsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-    {
-        ImageView habitImage;
-        TextView habitTitle;
-        TextView habitTime;
-        TextView habitCategory;
-
-        public HabitsViewHolder(@NonNull View itemView) {
-            super(itemView);
-            habitImage = itemView.findViewById(R.id.single_habit_image);
-            habitTitle = itemView.findViewById(R.id.single_habit_title);
-            habitTime = itemView.findViewById(R.id.single_habit_time);
-            habitCategory = itemView.findViewById(R.id.single_habit_category);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int elemntId = mHabitEntry.get(getAdapterPosition()).getId();
-            mItemClickListener.onItemClickListener(elemntId);
-        }
-    }
 
     public void setHabits(List<HabitEntry> habits)
     {
@@ -115,5 +129,30 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
     public interface ItemClickListener
     {
         void onItemClickListener(int itemId);
+    }
+
+    class HabitsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    {
+        ImageView habitImage;
+        TextView habitTitle;
+        TextView habitTime;
+        TextView habitCategory;
+        CountDownTimer timer;
+        CountDownTimer timer2;
+
+        public HabitsViewHolder(@NonNull View itemView) {
+            super(itemView);
+            habitImage = itemView.findViewById(R.id.single_habit_image);
+            habitTitle = itemView.findViewById(R.id.single_habit_title);
+            habitTime = itemView.findViewById(R.id.single_habit_time);
+            habitCategory = itemView.findViewById(R.id.single_habit_category);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int elemntId = mHabitEntry.get(getAdapterPosition()).getId();
+            mItemClickListener.onItemClickListener(elemntId);
+        }
     }
 }

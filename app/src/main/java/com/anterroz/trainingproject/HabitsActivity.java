@@ -2,8 +2,9 @@ package com.anterroz.trainingproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +13,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.anterroz.trainingproject.database.HabitEntry;
 import com.anterroz.trainingproject.database.HabitsDatabase;
@@ -41,6 +41,7 @@ public class HabitsActivity extends AppCompatActivity implements HabitsAdapter.I
 
        mAdapter = new HabitsAdapter(this,this);
        mRecyclerView.setAdapter(mAdapter);
+       mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
        /* Adding new ItemTouchHelper for deleting habits
@@ -64,7 +65,7 @@ public class HabitsActivity extends AppCompatActivity implements HabitsAdapter.I
                });
            }
        }).attachToRecyclerView(mRecyclerView);
-       retrieveHabits();
+       setupViewModel();
     }
 
     public void addNewHabit(View view) {
@@ -72,13 +73,12 @@ public class HabitsActivity extends AppCompatActivity implements HabitsAdapter.I
     }
 
 
-    private void retrieveHabits() {
-        Log.d(TAG,"Retrieving habits from DataBase..");
-        final LiveData<List<HabitEntry>> habits = mDatabase.habitDao().loadAllHabits();
-        habits.observe(this, new Observer<List<HabitEntry>>() {
+    private void setupViewModel() {
+        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.getHabits().observe(this, new Observer<List<HabitEntry>>() {
             @Override
             public void onChanged(List<HabitEntry> habitEntries) {
-                Log.d(TAG,"Receiving database update (Live data)");
+                Log.d(TAG,"Receiving database update (Live data) from ViewModel");
                 mAdapter.setHabits(habitEntries);
             }
         });

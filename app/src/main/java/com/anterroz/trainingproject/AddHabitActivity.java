@@ -3,6 +3,7 @@ package com.anterroz.trainingproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,11 +64,12 @@ public class AddHabitActivity extends AppCompatActivity implements AdapterView.O
             if(mHabitId == DEFAULT_TASK_ID)
             {
                 mHabitId = intent.getIntExtra(EXTRA_TAG,DEFAULT_TASK_ID);
-                final LiveData<HabitEntry> habitEntry = mDatabase.habitDao().loadHabitById(mHabitId);
-                habitEntry.observe(this, new Observer<HabitEntry>() {
+                AddHabitViewModelFactory factory = new AddHabitViewModelFactory(mDatabase,mHabitId);
+                final AddHabitViewModel viewModel = ViewModelProviders.of(this,factory).get(AddHabitViewModel.class);
+                viewModel.getHabit().observe(this, new Observer<HabitEntry>() {
                     @Override
                     public void onChanged(HabitEntry habit) {
-                        habitEntry.removeObserver(this);
+                        viewModel.getHabit().removeObserver(this);
                         Log.d(TAG, "Receiving database update from LiveData");
                         populateUI(habit);
                     }
@@ -124,26 +126,23 @@ public class AddHabitActivity extends AppCompatActivity implements AdapterView.O
 
     public boolean areAnyRadioButtonChecked()
     {
-        if(OneMinute.isChecked() || FifteenMinutes.isChecked() || ThirtyMinutes.isChecked() || OneHour.isChecked())
-        {
-            return true;
-        } else return false;
+        return (OneMinute.isChecked() || FifteenMinutes.isChecked() || ThirtyMinutes.isChecked() || OneHour.isChecked());
     }
 
     private int getTimeFromButtons()
     {
         if(OneMinute.isChecked())
         {
-            return 1;
+            return getTimeFinished(1);
         }else if(FifteenMinutes.isChecked())
         {
-            return 15;
+            return getTimeFinished(15);
         }else if(ThirtyMinutes.isChecked())
         {
-            return 30;
+            return getTimeFinished(30);
         }else
         {
-            return 60;
+            return getTimeFinished(60);
         }
     }
 
@@ -162,7 +161,7 @@ public class AddHabitActivity extends AppCompatActivity implements AdapterView.O
             int time = getTimeFromButtons();
             Date date = new Date();
 
-            final HabitEntry habitEntry = new HabitEntry(title, imageView, date, time, category);
+            final HabitEntry habitEntry = new HabitEntry(title, imageView, date, time, category,true);
             AppExecutor.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -214,22 +213,44 @@ public class AddHabitActivity extends AppCompatActivity implements AdapterView.O
         }
 
         mTitle.setText(habit.getTitle());
-        mImageView.setImageResource(habit.getImageViewId());
+        String habitCategory = habit.getCategory();
+        switch (habitCategory)
+        {
+            case "Exercises":
+                mCategorySpinner.setSelection(0);
+                break;
+            case "Self Development":
+                mCategorySpinner.setSelection(1);
+                break;
+            case "Health":
+                mCategorySpinner.setSelection(2);
+                break;
+            case "Other":
+                mCategorySpinner.setSelection(3);
+                break;
+
+        }
         int time = habit.getTimeInSeconds();
         switch (time)
         {
-            case 1:
+            case 60:
                 OneMinute.setChecked(true);
                 break;
-            case 15:
+            case 15*60:
                 FifteenMinutes.setChecked(true);
                 break;
-            case 30:
+            case 30*60:
                 ThirtyMinutes.setChecked(true);
                 break;
-            case 60:
+            case 60*60:
                 OneHour.setChecked(true);
                 break;
         }
+    }
+
+    private int getTimeFinished(int minutes)
+    {
+        //TODO: Change to 60000 after beeing done with reseting timer
+        return ( (int) new Date().getTime() + 10000*minutes);
     }
 }

@@ -8,6 +8,9 @@
     <string name="habits_toolbar_title">Your Habits</string>
     <string name="new_habit_button_update">Update</string>
     <string name="new_habit_no_time">You need to choose a time!</string>
+    <string name="bottom_icon_habits">Habits</string>
+    <string name="bottom_icon_settings">Settings</string>
+    <string name="bottom_icon_profile">Profile</string>
 
 
     <string-array name="categories">
@@ -16,4 +19,9 @@
         <item>Health</item>
         <item>Other</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Here will go the HabitApp Profile</string>
+    <string name="settings_fragment_title">Settings</string>
+    <string name="profile_title">Profile</string>
 </resources>

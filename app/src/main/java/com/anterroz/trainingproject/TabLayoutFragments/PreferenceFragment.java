@@ -1,6 +1,8 @@
-package com.anterroz.trainingproject;
+package com.anterroz.trainingproject.TabLayoutFragments;
 
 import android.os.Bundle;
+
+import com.anterroz.trainingproject.R;
 
 import androidx.preference.PreferenceFragmentCompat;
 

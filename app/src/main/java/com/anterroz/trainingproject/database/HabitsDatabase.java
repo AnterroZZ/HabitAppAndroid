@@ -15,7 +15,7 @@ public abstract class HabitsDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = HabitsDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "habitss";
+    private static final String DATABASE_NAME = "habitsDatabase2";
     private static HabitsDatabase sInstance;
 
     public static HabitsDatabase getInstance(Context context) {
