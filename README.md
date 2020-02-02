@@ -11,3 +11,15 @@ APP STILL IN DEVELOPMENT
 Version 1.0
 
 App got the database and recyclerView added to it. No notification yet!
+
+TODO//:
+
+Notification handling
+Make use of a profile 
+-Profile Design
+-Sharing your Profile
+-Friends System
+Login Password System in a local than online database
+Make use of some settings ( After notifications )
+Splash Screen 
+First time in App Handling
