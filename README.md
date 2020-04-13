@@ -1,25 +1,5 @@
 # HabitAppAndroid
 
-# Welcome to your new app-friend HabitApp!
+## Welcome to HabbitsApp
 
-
-# This app will help you to easly create, navigate, manage your future habits!
-# All you need to do is take a few clicks in order to set up your new habits!
-
-APP STILL IN DEVELOPMENT
-
-Version 1.0
-
-App got the database and recyclerView added to it. No notification yet!
-
-TODO//:
-
-Notification handling
-Make use of a profile 
--Profile Design
--Sharing your Profile
--Friends System
-Login Password System in a local than online database
-Make use of some settings ( After notifications )
-Splash Screen 
-First time in App Handling
+Have you ever wanted to do a push-ups or drink water every 5, 10, 15 minutes but always forgot to do it after a while? Fear not this app will remind you of all this activities. App work on the alarm based notifications that will be send to you after certain ammount of time. 
