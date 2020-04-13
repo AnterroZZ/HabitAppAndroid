@@ -4,9 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.work.BackoffPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,8 +30,13 @@ import android.widget.Toast;
 
 import com.anterroz.trainingproject.database.HabitEntry;
 import com.anterroz.trainingproject.database.HabitsDatabase;
+import com.anterroz.trainingproject.utilities.NotificationReceiver;
+import com.anterroz.trainingproject.utilities.NotificationWorker;
 
 import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class AddHabitActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -149,6 +163,7 @@ public class AddHabitActivity extends AppCompatActivity implements AdapterView.O
 
     public void AddNewHabit(View view) {
         String title = mTitle.getText().toString();
+        String tag = title + Math.random();
         String category = mCategorySpinner.getSelectedItem().toString();
 
         if(title.equals(""))
@@ -159,9 +174,25 @@ public class AddHabitActivity extends AppCompatActivity implements AdapterView.O
             Toast.makeText(this,getString(R.string.new_habit_no_time),Toast.LENGTH_LONG).show();
         } else {
             int time = getTimeFromButtons();
-            Date date = new Date();
+            PeriodicWorkRequest notificationRequest2 = new PeriodicWorkRequest.Builder(NotificationWorker.class, 15*60, TimeUnit.SECONDS)
+                    .setInitialDelay(time,TimeUnit.SECONDS)
+                    .addTag(tag)
+                    .build();
+            WorkManager workManager = WorkManager.getInstance();
+            workManager.enqueue(notificationRequest2);
 
-            final HabitEntry habitEntry = new HabitEntry(title, imageView, date, time, category,true);
+            Date date = new Date();
+            Intent intent = new Intent(getBaseContext(), NotificationReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(),1,intent,0);
+
+            long tenSeconds = 1000*10;
+            AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime()+ tenSeconds, tenSeconds, pendingIntent);
+
+            //TODO: Change the attributes of habit
+            final HabitEntry habitEntry = new HabitEntry(title, imageView, date, time, category,true,tag);
             AppExecutor.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.anterroz.trainingproject.database.HabitEntry;
 import com.anterroz.trainingproject.database.HabitsDatabase;
+import com.anterroz.trainingproject.utilities.NotificationUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,41 +64,19 @@ public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsView
 
             if (holder.timer != null) {
                 holder.timer.cancel();
-                holder.timer = new CountDownTimer(timeRemainingInMillis, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        String output = "Will go down in " + millisUntilFinished / 1000;
-                        holder.habitTime.setText(output);
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        holder.habitTime.setText("Done!");
-                    }
-                }.start();
-            }else
-            {
-                habitEntry.setTimeInSeconds((int) new Date().getTime() + 10000);
-                time = habitEntry.getTimeInSeconds();
-                timeRemainingInMillis=time - currentTime;
-                holder.timer = new CountDownTimer(timeRemainingInMillis, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        String output = "Will go down in " + millisUntilFinished / 1000;
-                        holder.habitTime.setText(output);
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        holder.habitTime.setText("Done!");
-                        this.cancel();
-                    }
-                }.start();
             }
+                holder.timer = new CountDownTimer(timeRemainingInMillis, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        String output = "Will go down in " + millisUntilFinished / 1000;
+                        holder.habitTime.setText(output);
+                    }
 
-
-
-
+                    @Override
+                    public void onFinish() {
+                        holder.habitTime.setText("Done!");
+                    }
+                }.start();
 
         holder.habitTitle.setText(title);
         holder.habitImage.setImageResource(imageViewId);

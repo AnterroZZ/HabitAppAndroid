@@ -7,18 +7,37 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 
 import com.anterroz.trainingproject.R;
+import com.anterroz.trainingproject.utilities.NotificationUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 public class ProfileFragment extends Fragment {
 
     private Toolbar mToolbar;
+    private Button mNotificationButton;
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mNotificationButton = view.findViewById(R.id.bt_send_notification);
+        mNotificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Sending Notification...", Toast.LENGTH_SHORT).show();
+                NotificationUtils.remindUser(getActivity());
+            }
+        });
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -26,12 +26,18 @@
             />
 
     </androidx.appcompat.widget.Toolbar>
-    <View
-        android:id="@+id/profile_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent"
-        app:layout_constraintTop_toBottomOf="@id/profile_toolbar"
-        />
+
+    <Button
+        android:id="@+id/bt_send_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:onClick="sendNotification"
+        android:text="Send Notification!"
+        android:background="@drawable/ic_new_habbit_rounded_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
