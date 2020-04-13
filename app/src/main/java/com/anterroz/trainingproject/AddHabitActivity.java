@@ -188,7 +188,7 @@ public class AddHabitActivity extends AppCompatActivity implements AdapterView.O
             long tenSeconds = 1000*10;
             AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-            manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime()+ tenSeconds, tenSeconds, pendingIntent);
 
             //TODO: Change the attributes of habit
@@ -282,6 +282,6 @@ public class AddHabitActivity extends AppCompatActivity implements AdapterView.O
     private int getTimeFinished(int minutes)
     {
         //TODO: Change to 60000 after beeing done with reseting timer
-        return ( (int) new Date().getTime() + 10000*minutes);
+        return ( (int) new Date().getTime() + 60000*minutes);
     }
 }
