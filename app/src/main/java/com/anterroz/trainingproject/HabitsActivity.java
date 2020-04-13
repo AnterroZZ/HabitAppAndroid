@@ -8,14 +8,20 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkManager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.anterroz.trainingproject.database.HabitEntry;
 import com.anterroz.trainingproject.database.HabitsDatabase;
+import com.anterroz.trainingproject.utilities.NotificationReceiver;
 
 import java.util.List;
 
@@ -63,6 +69,10 @@ public class HabitsActivity extends AppCompatActivity implements HabitsAdapter.I
                        mDatabase.habitDao().deleteHabit(habitEntries.get(position));
                    }
                });
+               Intent intent = new Intent(getBaseContext(), NotificationReceiver.class);
+               PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,0);
+               AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+               manager.cancel(pendingIntent);
            }
        }).attachToRecyclerView(mRecyclerView);
        setupViewModel();
@@ -70,6 +80,7 @@ public class HabitsActivity extends AppCompatActivity implements HabitsAdapter.I
 
     public void addNewHabit(View view) {
         startActivity(new Intent(this,AddHabitActivity.class));
+        Intent addHabitIntent = new Intent(this,AddHabitActivity.class);
     }
 
 

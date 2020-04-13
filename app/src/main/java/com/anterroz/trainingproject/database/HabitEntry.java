@@ -3,11 +3,15 @@ package com.anterroz.trainingproject.database;
 import android.widget.ImageView;
 
 import java.util.Date;
+import java.util.UUID;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkRequest;
 
 @Entity(tableName = "habit")
 public class HabitEntry {
@@ -29,11 +33,13 @@ public class HabitEntry {
     @ColumnInfo(name = "category")
     private String category;
 
+    private String workRequest;
+
     private boolean firstTimerrunning;
 
 
     @Ignore
-    public HabitEntry(String title, int imageViewId,Date updatedAt,int timeInSeconds,String category,boolean firstTimerrunning)
+    public HabitEntry(String title, int imageViewId,Date updatedAt,int timeInSeconds,String category,boolean firstTimerrunning,String workRequest)
     {
         this.title = title;
         this.imageViewId = imageViewId;
@@ -41,9 +47,10 @@ public class HabitEntry {
         this.timeInSeconds = timeInSeconds;
         this.category = category;
         this.firstTimerrunning = firstTimerrunning;
+        this.workRequest = workRequest;
     }
 
-    public HabitEntry(int id, String title, int imageViewId,Date updatedAt, int timeInSeconds,String category,boolean firstTimerrunning)
+    public HabitEntry(int id, String title, int imageViewId,Date updatedAt, int timeInSeconds,String category,boolean firstTimerrunning,String workRequest)
     {
         this.id = id;
         this.title = title;
@@ -52,6 +59,7 @@ public class HabitEntry {
         this.timeInSeconds = timeInSeconds;
         this.category = category;
         this.firstTimerrunning =firstTimerrunning;
+        this.workRequest = workRequest;
     }
 
     public int getId() {
@@ -106,5 +114,13 @@ public class HabitEntry {
 
     public void setFirstTimerrunning(boolean firstTimerrunning) {
         this.firstTimerrunning = firstTimerrunning;
+    }
+
+    public String getWorkRequest() {
+        return workRequest;
+    }
+
+    public void setWorkRequest(String workRequest) {
+        this.workRequest = workRequest;
     }
 }
